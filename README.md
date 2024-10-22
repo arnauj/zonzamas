@@ -1,2 +1,1 @@
-# zonzamas
-Web del Zonzamas para DSW
+# zonzamas.lan
