@@ -3,6 +3,8 @@
 
     require_once "general.php";
 
+    ob_start();
+
 
 
 
@@ -65,6 +67,8 @@
         break;
         case 'delete':
             eliminar();
+
+            ob_clean();
 
             header("location: /biblioteca.php");
             exit(0);
