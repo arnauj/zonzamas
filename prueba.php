@@ -2,11 +2,14 @@
 
 <?php
 
-    require "general.php";
 
 
-    $form = new Form;
+    
 
+    //echo  '/^.{1,100}$/i';
 
-
-    echo $form->val['nombre'];
+    echo EREG_NOMBRE_OBLIGATORIO;
+    echo preg_match(EREG_NOMBRE_OBLIGATORIO,'asfdas as fasdfasfdjas fjasdf kjasasdfasdfdfkj asasfdjasdfasd fdsafdsfaafsdasdfasdfasdfasdfasdfasdfdsadsafasdfasfsadfdsafdsasdfjasdfa');
+    
+    
+    

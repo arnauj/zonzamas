@@ -2,19 +2,19 @@
 
 
 
-    class Elemento
+    class Textarea extends Elemento
     {
 
         public function pintar()
         {
-            if (!empty($this->placeholder))
-                $placeholder = "placeholder=\"{$this->placeholder}\"";
+            $this->previo_pintar();
+
 
 
             return "
-                <label class=\"". $errores[$this->name]['class_error'] ." form-label\" for=\"{$this->name}\">{$this->lit[$this->name]}:</label>
-                <input {$disabled} class=\"form-control\" type=\"{$this->type}\" id=\"id{$this->name}\" name=\"{$this->name}\" value=\"{$_POST['nombre']}\" {$placeholder}>
-                ". $errores[$this->name]['desc_error'] ."
+                <label class=\"". $this->error['class_error'] ." form-label\" for=\"{$this->name}\">{$this->lit[$this->name]}:</label>
+                <textarea {$this->prev_disabled} class=\"form-control\" id=\"id{$this->name}\" name=\"{$this->name}\" {$this->prev_placeholder}>{$this->value}</textarea>
+                ". $this->error['desc_error'] ."
                 <br />
             ";
         }

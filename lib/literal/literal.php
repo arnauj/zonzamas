@@ -13,9 +13,12 @@
             {
                 case 'ES':
                     $this->lit = [
-                        'name' => 'Nombre'
-    //                  ,'type' => 'Tipo'
-
+                        'name'        => 'Nombre'
+                       ,'description' => 'Descripción'
+                       ,'autor'       => 'Autor'
+                       ,'editorial'   => 'Editorial'
+                       ,'enviar'      => 'Enviar'
+                       ,'error_gen'   => 'El campo es inválido'
 
                     ];
 

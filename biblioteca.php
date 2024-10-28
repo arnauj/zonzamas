@@ -6,12 +6,9 @@
     ob_start();
 
 
-
+    $form = Form::getInstance();
 
     echo Plantilla::header("CIFP Zonzamas");
-
-
-    define('TEXTO_ERROR', '<em class="error_campo_texto">El campo es inválido</em> <br />');
 
     define('EDITORIALES', ['AY' => 'Anaya', 'ST' => 'Santillana']);
 
@@ -28,9 +25,11 @@
     {
         case 'create':
 
+            inicializar();
+
             if (!empty($_POST['paso']))
             {
-                $errores = validar_campos();
+                $errores = $form->validar();
 
                 if(count($errores) == 0)
                 {
@@ -46,6 +45,8 @@
         break;
         case 'update':
 
+            inicializar();
+
             if (empty($_POST['paso']))
             {
                 //Cargar los datos
@@ -53,7 +54,7 @@
             }
             else
             {
-                $errores = validar_campos();
+                $errores = $form->validar();
 
                 if(count($errores) == 0)
                 {
@@ -66,6 +67,7 @@
 
         break;
         case 'delete':
+
             eliminar();
 
             ob_clean();
@@ -84,30 +86,33 @@
         break;
     }
 
-
-
-    function validar_campos()
+    function inicializar()
     {
-        $errores = [];
+        $form = Form::getInstance();
 
-        $campos = ['nombre', 'descripcion', 'autor', 'editorial'];
+        $form->accion('biblioteca.php');
 
+        $paso        = new Hidden('paso'); 
+        $paso->value = 1;
 
-        foreach($campos as $campo)
-        {
-            if(empty($_POST[$campo]))
-            {
-                $errores[$campo]['error']       = True;
-                $errores[$campo]['desc_error']  = TEXTO_ERROR;
-                $errores[$campo]['class_error'] = 'error_campo_texto';
-            }
-        }
+        $oper        = new Hidden('oper'); 
+        $id          = new Hidden('id');        
 
+        $nombre      = new Input   ('name'       ,['placeholder' => 'Nombre del libro...'     , 'validar' => True, 'ereg' => EREG_TEXTO_100_OBLIGATORIO  ]);
+        $descripcion = new Textarea('description',['placeholder' => 'Descripción del libro...', 'validar' => True ]);
+        $autor       = new Input   ('autor'      ,['placeholder' => 'Autor del libro...'      , 'validar' => True, 'ereg' => EREG_TEXTO_150_OBLIGATORIO  ]);
+        $editorial   = new Select  ('editorial'  ,EDITORIALES,['validar' => True]);
 
+        $form->cargar($paso);
+        $form->cargar($oper);
+        $form->cargar($id);
 
-        return $errores;
-
+        $form->cargar($nombre);
+        $form->cargar($descripcion);
+        $form->cargar($autor);
+        $form->cargar($editorial);
     }
+
 
 
     function cabecera($titulo_seccion='')
@@ -138,7 +143,7 @@
 
     function formulario($oper,$errores = [])
     {
-
+        $form = Form::getInstance();
 
         $id = $_REQUEST['id'];
 
@@ -154,12 +159,10 @@
         
         }
 
-        $value_editoriales = '';
-        foreach(EDITORIALES as $cod_editorial => $texto_editorial)
-        {
-            $value_editoriales .= "<option value=\"{$cod_editorial}\">{$texto_editorial}</option>";
-        }
+        $html_formulario = $form->pintar(['botones_extra' => $botones_extra, 'disabled' => $disabled]);
 
+
+        /*
         $html_formulario = "
 
             <form method=\"POST\" action=\"biblioteca.php\">
@@ -200,6 +203,7 @@
             </form>
         
         ";
+        */
 
         return $html_formulario;
 
@@ -223,6 +227,8 @@
 
     function recuperar()
     {
+        $form = Form::getInstance();
+
         $id =  $_REQUEST['id'];
 
         $sql = "
@@ -237,11 +243,10 @@
         $fila = $resultado->fetch_assoc();
 
 
-        $_POST['nombre']      = $fila['nombre'];
-        $_POST['descripcion'] = $fila['descripcion'];
-        $_POST['autor']       = $fila['autor'];
-        $_POST['editorial']   = $fila['editorial'];
-
+        $form->elementos['name']->value        = $fila['nombre'];
+        $form->elementos['description']->value = $fila['descripcion'];
+        $form->elementos['autor']->value       = $fila['autor'];
+        $form->elementos['editorial']->value   = $fila['editorial'];
     }
 
     function actualizar()
