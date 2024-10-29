@@ -272,6 +272,7 @@
                     ,editorial   = '{$form->val['editorial']}'
 
                     ,ip_ult_mod   = '{$_SERVER['REMOTE_ADDR']}'
+                    ,fecha_ult_mod = CURRENT_TIMESTAMP
 
                 WHERE id = '{$form->val['id']}'
 
