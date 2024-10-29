@@ -25,16 +25,20 @@
     {
         case 'create':
 
+
             inicializar();
 
-            if (!empty($_POST['paso']))
+            if (!empty($form->val['paso']))
             {
                 $errores = $form->validar();
 
-                if(count($errores) == 0)
-                {
-                    insertar();
 
+
+                if(!$form->cantidad_errores)
+                {
+                    
+                    insertar();
+                    $form->activeDisable();
                 }
             }
 
@@ -47,7 +51,7 @@
 
             inicializar();
 
-            if (empty($_POST['paso']))
+            if (empty($form->val['paso']))
             {
                 //Cargar los datos
                 recuperar();
@@ -56,9 +60,10 @@
             {
                 $errores = $form->validar();
 
-                if(count($errores) == 0)
+                if(!$form->cantidad_errores)
                 {
                     actualizar();
+                    $form->activeDisable();
                 }
             }
 
@@ -145,13 +150,13 @@
     {
         $form = Form::getInstance();
 
-        $id = $_REQUEST['id'];
+        $id = $form->val['id'];
 
-        $mensaje_exito = $botones_extra = $disabled = '';
-        if($_POST['paso'] && count($errores) == 0)
+        $botones_extra = '';
+        $mensaje_exito = False;
+        if($form->val['paso'] && $form->cantidad_errores == 0)
         {
-            $mensaje_exito = '<div class="exito">Operación realizada con éxito</div>';
-            $disabled = 'disabled';
+            $mensaje_exito = True;
             $botones_extra = '<a href="/biblioteca.php?oper=create" class="btn btn-primary">Nuevo libro</a>';
 
             if($oper == 'update')
@@ -159,7 +164,7 @@
         
         }
 
-        $html_formulario = $form->pintar(['botones_extra' => $botones_extra, 'disabled' => $disabled]);
+        $html_formulario = $form->pintar(['botones_extra' => $botones_extra,'exito' =>  $mensaje_exito]);
 
 
         /*
@@ -215,11 +220,13 @@
     function eliminar()
     {
 
-        if (!empty($_GET['id']))
+        $id = Form::getInstance()->val['id'];
+
+        if (!empty($id))
         {
             $sql = "
                 DELETE FROM libros
-                WHERE id = '{$_GET['id']}'
+                WHERE id = '{$id}'
             ";
             $resultado = BBDD::query($sql);
         }
@@ -229,7 +236,7 @@
     {
         $form = Form::getInstance();
 
-        $id =  $_REQUEST['id'];
+        $id =  $form->val['id'];
 
         $sql = "
             SELECT * 
@@ -251,19 +258,22 @@
 
     function actualizar()
     {
-        if (!empty($_POST['id']))
+
+        $form = Form::getInstance();
+
+        if (!empty($form->val['id']))
         {
             $sql = "
                 UPDATE libros
 
-                SET    nombre      = '{$_POST['nombre']}'
-                    ,descripcion = '{$_POST['descripcion']}'
-                    ,autor       = '{$_POST['autor']}'
-                    ,editorial   = '{$_POST['editorial']}'
+                SET  nombre      = '{$form->val['name']}'
+                    ,descripcion = '{$form->val['description']}'
+                    ,autor       = '{$form->val['autor']}'
+                    ,editorial   = '{$form->val['editorial']}'
 
                     ,ip_ult_mod   = '{$_SERVER['REMOTE_ADDR']}'
 
-                WHERE id = '{$_POST['id']}'
+                WHERE id = '{$form->val['id']}'
 
             ";
             $resultado = BBDD::query($sql);
@@ -273,6 +283,8 @@
 
     function insertar()
     {
+        $form = Form::getInstance();
+
         $sql = "
             INSERT INTO libros
             (
@@ -284,10 +296,10 @@
             )
             VALUES
             (   
-                 '". $_POST['nombre'] ."'
-                ,'". $_POST['descripcion'] ."'
-                ,'". $_POST['autor'] ."'
-                ,'". $_POST['editorial'] ."'
+                 '". $form->val['name'] ."'
+                ,'". $form->val['description'] ."'
+                ,'". $form->val['autor'] ."'
+                ,'". $form->val['editorial'] ."'
 
                 ,'". $_SERVER['REMOTE_ADDR'] ."'
             );
@@ -300,6 +312,8 @@
 
     function resultados_busqueda()
     {
+        $form = Form::getInstance();
+
         $listado_libros = '
         <table class="table">
             <thead>
@@ -317,11 +331,11 @@
 
         $limite = LIMITE_SCROLL;
 
-        $pagina = $_GET['pagina'];
+        $pagina = $form->val['pagina'];
 
         $offset = $pagina * $limite;
 
-        $sql = "SELECT * FROM libros LIMIT {$limite} OFFSET {$offset}";
+        $sql = "SELECT * FROM libros ORDER BY fecha_ult_mod DESC LIMIT {$limite} OFFSET {$offset} ";
 
         $resultado = BBDD::query($sql);
 

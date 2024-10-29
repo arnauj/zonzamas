@@ -9,10 +9,18 @@
 
         public $elementos = [];
 
+        public $cantidad_errores;
+
+        public $disabled;
+
 
         function __construct()
         {
             $this->val = Campo::getInstance()->val;
+
+            $this->cantidad_errores = 0;
+
+            $this->disabled = False;
         
 
         }
@@ -25,6 +33,16 @@
         public function cargar($elemento)
         {
             $this->elementos[$elemento->name] = $elemento;
+        }
+
+
+        public function activeDisable()
+        {
+            $this->disabled = True;
+            foreach($this->elementos as $ind => $elemento)
+            {
+                $elemento->disabled = True;
+            }
         }
 
         static public function getInstance()
@@ -47,6 +65,10 @@
             foreach($this->elementos as $ind => $elemento)
             {
                 $this->errores[$elemento->name] = $elemento->validar();
+
+                if($this->errores[$elemento->name]['error'])
+                    $this->cantidad_errores++;
+
             }
 
             return $this->errores;
@@ -56,7 +78,10 @@
         public function pintar($opt=[])
         {
             $botones_extra = $opt['botones_extra'];
-            $disabled      = $opt['disabled'];
+            $disabled      = $this->disabled ? ' disabled="disabled" ' : '';
+
+
+            $mensaje_exito = $opt['exito']? '<div class="exito">Operación realizada con éxito</div>' : '';
 
             $texto_enviar = Literal::getInstance()->lit['enviar'];
 
@@ -68,7 +93,9 @@
 
             return "
                 <form method=\"POST\" action=\"{$this->accion}\">
+                    {$mensaje_exito}
                     {$html_elementos}
+                    
                     <div style=\"text-align:right\">
                         {$botones_extra}
                         <input {$disabled} type=\"submit\" class=\"btn btn-primary\" value=\"{$texto_enviar}\" />
