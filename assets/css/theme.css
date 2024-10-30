@@ -2544,8 +2544,9 @@ progress {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
+
   color: #402B2B;
-  background-color: #F5F5F5;
+  
   background-clip: padding-box;
   border: 1px solid #E0E0E0;
   -webkit-appearance: none;
@@ -2577,7 +2578,7 @@ progress {
 
 .form-control:focus {
   color: #402B2B;
-  background-color: #F5F5F5;
+  
   border-color: #fee480;
   outline: 0;
   -webkit-box-shadow: 0 0 0 0.25rem rgba(253, 200, 0, 0.25);
@@ -2614,8 +2615,9 @@ progress {
 }
 
 .form-control:disabled, .form-control[readonly] {
-  background-color: #F5F5F5;
+  
   opacity: 1;
+  background:#efefef;
 }
 
 .form-control::file-selector-button {
@@ -2624,7 +2626,7 @@ progress {
   -webkit-margin-end: 0.75rem;
   margin-inline-end: 0.75rem;
   color: #402B2B;
-  background-color: #F5F5F5;
+  
   pointer-events: none;
   border-color: inherit;
   border-style: solid;
@@ -2656,7 +2658,7 @@ progress {
   -webkit-margin-end: 0.75rem;
   margin-inline-end: 0.75rem;
   color: #402B2B;
-  background-color: #F5F5F5;
+  
   pointer-events: none;
   border-color: inherit;
   border-style: solid;
@@ -2779,7 +2781,7 @@ textarea.form-control-lg {
   font-weight: 400;
   line-height: 1.5;
   color: #402B2B;
-  background-color: #F5F5F5;
+  background:#fff;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23616161' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
@@ -2804,7 +2806,7 @@ textarea.form-control-lg {
 }
 
 .form-select:disabled {
-  background-color: #F5F5F5;
+
 }
 
 .form-select:-moz-focusring {
@@ -2843,7 +2845,7 @@ textarea.form-control-lg {
   height: 1em;
   margin-top: 0.25em;
   vertical-align: top;
-  background-color: #F5F5F5;
+  
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -3221,7 +3223,6 @@ textarea.form-control-lg {
   color: #402B2B;
   text-align: center;
   white-space: nowrap;
-  background-color: #F5F5F5;
   border: 1px solid #E0E0E0;
   border-radius: 0.5rem;
 }
@@ -4444,7 +4445,6 @@ fieldset:disabled .btn {
 .dropdown-item:hover, .dropdown-item:focus {
   color: #3a2727;
   text-decoration: none;
-  background-color: #F5F5F5;
 }
 
 .dropdown-item.active, .dropdown-item:active {
@@ -5763,7 +5763,7 @@ fieldset:disabled .btn {
 
 .list-group-item-action:active {
   color: #402B2B;
-  background-color: #F5F5F5;
+
 }
 
 .list-group-item {
@@ -14558,7 +14558,7 @@ fieldset:disabled .btn {
     border-color: #FCFCFC !important;
   }
   .border-xl-200 {
-    border-color: #F5F5F5 !important;
+    
   }
   .border-xl-300 {
     border-color: #EEEEEE !important;
@@ -16036,7 +16036,7 @@ fieldset:disabled .btn {
     border-color: #FCFCFC !important;
   }
   .border-xxl-200 {
-    border-color: #F5F5F5 !important;
+    
   }
   .border-xxl-300 {
     border-color: #EEEEEE !important;
@@ -17766,7 +17766,7 @@ ul {
 }
 
 .link-200 {
-  color: #F5F5F5 !important;
+  
 }
 
 .link-200:hover, .link-200:focus {
@@ -17927,7 +17927,7 @@ ul {
 }
 
 .icon-item:hover, .icon-item:focus {
-  background-color: #F5F5F5;
+  
 }
 
 .icon-item.icon-item-sm {
@@ -18433,4 +18433,3 @@ ul {
 |   User Styles
 -----------------------------------------------*/
 
-/*# sourceMappingURL=theme.css.map */

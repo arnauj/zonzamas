@@ -26,7 +26,7 @@
 
             return "
                 <label class=\"". $this->error['class_error'] ." form-label\" for=\"{$this->name}\">{$this->lit[$this->name]}:</label>
-                <select {$this->pre_disabled}  class=\"form-control form-select\"  id=\"id{$this->name}\" name=\"{$this->name}\"> 
+                <select {$this->prev_disabled}  class=\"form-control form-select\"  id=\"id{$this->name}\" name=\"{$this->name}\"> 
                     {$html_options}
                 </select>
                 <br />
