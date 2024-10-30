@@ -245,7 +245,7 @@
         {
             $andid = '';
             if (!empty($id))
-                $andid = "AND id = '{$id}' ";
+                $andid = "AND id <> '{$id}' ";
 
 
             $sql = "
