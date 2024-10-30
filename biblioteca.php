@@ -36,9 +36,16 @@
 
                 if(!$form->cantidad_errores)
                 {
-                    
-                    insertar();
-                    $form->activeDisable();
+                    if(!existeLibro())
+                    {
+                        insertar();
+                        $form->activeDisable();
+                    }
+                    else
+                    {
+                        $form->duplicado = True;
+                    }
+
                 }
             }
 
@@ -62,9 +69,17 @@
 
                 if(!$form->cantidad_errores)
                 {
-                    actualizar();
-                    $form->activeDisable();
+                    if (!existeLibro($form->val['id']))
+                    {
+                        actualizar();
+                        $form->activeDisable();
+                    }
+                    else
+                    {
+                        $form->duplicado = True;
+                    }
                 }
+
             }
 
             $html_salida .= cabecera('actualizar');
@@ -216,6 +231,39 @@
 
 
     }
+
+    function existeLibro($id='')
+    {
+        $form = Form::getInstance();
+
+
+        if (   !empty($form->val['name']) 
+            && !empty($form->val['description'])
+            && !empty($form->val['autor'])
+            && !empty($form->val['editorial'])
+        )
+        {
+            $andid = '';
+            if (!empty($id))
+                $andid = "AND id = '{$id}' ";
+
+
+            $sql = "
+                SELECT nombre
+                FROM   libros
+                WHERE  nombre      = '{$form->val['name']}'
+                AND    descripcion = '{$form->val['description']}'
+                AND    autor       = '{$form->val['autor']}'
+                AND    editorial   = '{$form->val['editorial']}'
+                {$andid}
+            ";
+
+            $resultado = BBDD::query($sql);
+        }
+
+        return $resultado->num_rows;
+    }
+
 
     function eliminar()
     {

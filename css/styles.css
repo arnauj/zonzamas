@@ -40,12 +40,18 @@ h1 > span{
 
 }
 
-.exito {
-    background: #77d177;
+.exito, .mensaje_error {
     color: #fff;
     font-weight: bold;
     padding: 0 5px;
     text-align: center;
     border-radius: 15px;
     margin-bottom: 10px;
+}
+.exito{
+    background: #77d177;
+}
+
+.mensaje_error{
+    background: #ed5e5e;
 }

@@ -13,6 +13,8 @@
 
         public $disabled;
 
+        public $duplicado;
+
 
         function __construct()
         {
@@ -21,6 +23,7 @@
             $this->cantidad_errores = 0;
 
             $this->disabled = False;
+            $this->duplicado = False;
         
 
         }
@@ -80,8 +83,10 @@
             $botones_extra = $opt['botones_extra'];
             $disabled      = $this->disabled ? ' disabled="disabled" ' : '';
 
-
-            $mensaje_exito = $opt['exito']? '<div class="exito">Operación realizada con éxito</div>' : '';
+            if($this->duplicado)
+                $mensaje_final = '<div class="mensaje_error">Hay un registro duplicado en BBDD</div>';
+            else
+                $mensaje_final = $opt['exito']? '<div class="exito">Operación realizada con éxito</div>' : '';
 
             $texto_enviar = Literal::getInstance()->lit['enviar'];
 
@@ -93,7 +98,7 @@
 
             return "
                 <form method=\"POST\" action=\"{$this->accion}\">
-                    {$mensaje_exito}
+                    {$mensaje_final}
                     {$html_elementos}
                     
                     <div style=\"text-align:right\">
