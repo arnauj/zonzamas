@@ -92,7 +92,7 @@
 
             ob_clean();
 
-            header("location: /biblioteca.php");
+            header("location: /biblioteca/");
             exit(0);
 
         break;
@@ -110,7 +110,7 @@
     {
         $form = Form::getInstance();
 
-        $form->accion('biblioteca.php');
+        $form->accion('/biblioteca/');
 
         $paso        = new Hidden('paso'); 
         $paso->value = 1;
@@ -144,7 +144,7 @@
         else
         {
             $breadcrumb = "
-                <li class=\"breadcrumb-item\"><a href=\"/biblioteca.php\">biblioteca</a></li>
+                <li class=\"breadcrumb-item\"><a href=\"/biblioteca/\">biblioteca</a></li>
                 <li class=\"breadcrumb-item active\" aria-current=\"page\">{$titulo_seccion}</li>
             ";
         }
@@ -172,10 +172,10 @@
         if($form->val['paso'] && $form->cantidad_errores == 0)
         {
             $mensaje_exito = True;
-            $botones_extra = '<a href="/biblioteca.php?oper=create" class="btn btn-primary">Nuevo libro</a>';
+            $botones_extra = '<a href="/biblioteca/alta/" class="btn btn-primary">Nuevo libro</a>';
 
             if($oper == 'update')
-                $botones_extra .= ' <a href="/biblioteca.php?oper=update&id='. $id .'" class="btn btn-primary">Editar</a>';
+                $botones_extra .= ' <a href="/biblioteca/actualizar/'. $id .'" class="btn btn-primary">Editar</a>';
         
         }
 
@@ -396,8 +396,8 @@
                 $listado_libros .= "
                     <tr>
                         <th scope=\"row\">
-                            <a href=\"/biblioteca.php?oper=update&id={$fila['id']}\" class=\"btn btn-primary\">Actualizar</a>
-                            <a onclick=\"if(confirm('Cuidado, estás tratando de eliminar el libro: {$fila['nombre']}')) location.href = '/biblioteca.php?oper=delete&id={$fila['id']}';\" class=\"btn btn-danger\">Eliminar</a>
+                            <a href=\"/biblioteca/actualizar/{$fila['id']}\" class=\"btn btn-primary\">Actualizar</a>
+                            <a onclick=\"if(confirm('Cuidado, estás tratando de eliminar el libro: {$fila['nombre']}')) location.href = '/biblioteca/eliminar/{$fila['id']}';\" class=\"btn btn-danger\">Eliminar</a>
                         </th>
                         <td>{$fila['nombre']}</td>
                         <td>{$fila['descripcion']}</td>
@@ -413,7 +413,7 @@
         }
 
         if($pagina)
-            $pagina_anterior = '<li class="page-item"><a class="page-link" href="/biblioteca.php?pagina='. ($pagina - 1) .'"">Anterior</a></li>';
+            $pagina_anterior = '<li class="page-item"><a class="page-link" href="/biblioteca/pag/'. ($pagina - 1) .'"">Anterior</a></li>';
 
         $listado_libros .= '
                 </tbody>
@@ -421,13 +421,13 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     '. $pagina_anterior .'
-                    <li class="page-item"><a class="page-link" href="/biblioteca.php?pagina='. ($pagina + 1) .'">Siguiente</a></li>
+                    <li class="page-item"><a class="page-link" href="/biblioteca/pag/'. ($pagina + 1) .'">Siguiente</a></li>
                 </ul>
             </nav>
 
 
             <div class="alta">
-                <a href="/biblioteca.php?oper=create" class="btn btn-success">Alta de libro</a>
+                <a href="/biblioteca/alta/" class="btn btn-success">Alta de libro</a>
             </div>
         ';
 

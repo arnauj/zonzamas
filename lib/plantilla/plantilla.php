@@ -33,20 +33,20 @@
                         <!-- ===============================================-->
                         <!--    Favicons-->
                         <!-- ===============================================-->
-                        <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"assets/img/favicons/apple-touch-icon.png\">
-                        <link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"assets/img/favicons/favicon-32x32.png\">
-                        <link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"assets/img/favicons/favicon-16x16.png\">
-                        <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"assets/img/favicons/favicon.ico\">
-                        <link rel=\"manifest\" href=\"assets/img/favicons/manifest.json\">
-                        <meta name=\"msapplication-TileImage\" content=\"assets/img/favicons/mstile-150x150.png\">
+                        <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/assets/img/favicons/apple-touch-icon.png\">
+                        <link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"/assets/img/favicons/favicon-32x32.png\">
+                        <link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"/assets/img/favicons/favicon-16x16.png\">
+                        <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"/assets/img/favicons/favicon.ico\">
+                        <link rel=\"manifest\" href=\"/assets/img/favicons/manifest.json\">
+                        <meta name=\"msapplication-TileImage\" content=\"/assets/img/favicons/mstile-150x150.png\">
                         <meta name=\"theme-color\" content=\"#ffffff\">
 
 
                         <!-- ===============================================-->
                         <!--    Stylesheets-->
                         <!-- ===============================================-->
-                        <link href=\"assets/css/theme.css\" rel=\"stylesheet\" />
-                        <link href=\"css/styles.css\" rel=\"stylesheet\" />
+                        <link href=\"/assets/css/theme.css\" rel=\"stylesheet\" />
+                        <link href=\"/css/styles.css\" rel=\"stylesheet\" />
 
                     </head>
 
@@ -100,12 +100,12 @@
                 <nav class=\"navbar navbar-expand-lg navbar-light sticky-top py-3 d-block\" data-navbar-on-scroll=\"data-navbar-on-scroll\">
                     <div class=\"container\">
                     <h1><span>CIFP Zonzamas</span></h1>  
-                    <!--<a class=\"navbar-brand\" href=\"/\"><img src=\"img/logo.png\" height=\"45\" alt=\"logo\" /></a>-->
+                    <!--<a class=\"navbar-brand\" href=\"/\"><img src=\"/img/logo.png\" height=\"45\" alt=\"logo\" /></a>-->
                     <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\"><span class=\"navbar-toggler-icon\"> </span></button>
                     <div class=\"collapse navbar-collapse border-top border-lg-0 mt-4 mt-lg-0\" id=\"navbarSupportedContent\">
                         <ul class=\"navbar-nav ms-auto pt-2 pt-lg-0 font-base\">
                         <li class=\"nav-item px-2\"><a class=\"nav-link active\" aria-current=\"page\" href=\"/\">Home</a></li>
-                        <li class=\"nav-item px-2\"><a class=\"nav-link\" aria-current=\"page\" href=\"/biblioteca.php\">Biblioteca</a></li>
+                        <li class=\"nav-item px-2\"><a class=\"nav-link\" aria-current=\"page\" href=\"/biblioteca/\">Biblioteca</a></li>
                         </ul><a class=\"btn btn-primary order-1 order-lg-0\" href=\"#!\">Login</a>
                         <form class=\"d-flex my-3 d-block d-lg-none\">
                         <input class=\"form-control me-2\" type=\"search\" placeholder=\"Buscar\" aria-label=\"Buscar\" />
@@ -209,12 +209,12 @@
                 <!-- ===============================================-->
                 <!--    JavaScripts-->
                 <!-- ===============================================-->
-                <script src=\"vendors/@popperjs/popper.min.js\"></script>
-                <script src=\"vendors/bootstrap/bootstrap.min.js\"></script>
-                <script src=\"vendors/is/is.min.js\"></script>
+                <script src=\"/vendors/@popperjs/popper.min.js\"></script>
+                <script src=\"/vendors/bootstrap/bootstrap.min.js\"></script>
+                <script src=\"/vendors/is/is.min.js\"></script>
                 <script src=\"https://polyfill.io/v3/polyfill.min.js?features=window.scroll\"></script>
-                <script src=\"vendors/fontawesome/all.min.js\"></script>
-                <script src=\"assets/js/theme.js\"></script>
+                <script src=\"/vendors/fontawesome/all.min.js\"></script>
+                <script src=\"/assets/js/theme.js\"></script>
 
                 <link href=\"https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Rubik:wght@300;400;500;600;700;800&amp;display=swap\" rel=\"stylesheet\">
             </body>

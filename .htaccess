@@ -1,0 +1,11 @@
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    #RewriteRule ^producto/([0-9]+)$ producto.php?id=$1 [L]
+    RewriteRule ^biblioteca\/$ biblioteca.php [L]
+    RewriteRule ^biblioteca/pag/([0-9]+)$ /biblioteca.php?pagina=$1 [L]
+
+    RewriteRule ^biblioteca/actualizar/([0-9]+)$ /biblioteca.php?oper=update&id=$1 [L]
+    RewriteRule ^biblioteca/eliminar/([0-9]+)$   /biblioteca.php?oper=delete&id=$1 [L]
+    RewriteRule ^biblioteca/alta\/               /biblioteca.php?oper=create [L]
+</IfModule>
