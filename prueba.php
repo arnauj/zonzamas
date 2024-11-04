@@ -4,12 +4,27 @@
 
 
 
-    
+    require "general.php";
 
-    //echo  '/^.{1,100}$/i';
 
-    echo EREG_NOMBRE_OBLIGATORIO;
-    echo preg_match(EREG_NOMBRE_OBLIGATORIO,'asfdas as fasdfasfdjas fjasdf kjasasdfasdfdfkj asasfdjasdfasd fdsafdsfaafsdasdfasdfasdfasdfasdfasdfdsadsafasdfasfsadfdsafdsasdfjasdfa');
-    
-    
-    
+    $libro = new Libro();
+
+    $campos['paso']         = '1';
+    $campos['nombre']        = 'El libro de Eli';
+    $campos['descripcion']   = 'asdf asdfasdfasfdasdfasdf';
+    $campos['editorial']     = 'AY';
+    $campos['autor']         = 'Pedro S';
+
+
+
+
+    $libro->inicializar($campos);
+
+    $libro->insertar();
+
+    $libro->nombre = "El cromo  de Ginés";
+
+    $libro->actualizar();
+
+    echo '>>>>'. $libro->id.'|'. $libro->nombre .'<<<<';
+

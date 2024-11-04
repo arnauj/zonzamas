@@ -22,6 +22,12 @@ spl_autoload_register(function ($nombre) {
         case 'select':     
             require_once "lib/form/{$nombre}.php";
         break;
+        case 'libro':     
+            require_once "lib/tablas/libro.php";
+        break;
+        case 'tabla':     
+            require_once "lib/tablas/tabla.php";
+        break;
         default:
 
             require_once "lib/{$nombre}/{$nombre}.php";
