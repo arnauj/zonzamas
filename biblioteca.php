@@ -189,32 +189,25 @@
     {
         $form = Form::getInstance();
 
-
+        $cantidad = 0;
         if (   !empty($form->val['nombre']) 
             && !empty($form->val['descripcion'])
             && !empty($form->val['autor'])
             && !empty($form->val['editorial'])
         )
-        {
-            $andid = '';
-            if (!empty($id))
-                $andid = "AND id <> '{$id}' ";
+        {   
+            $libro = new Libro();
 
-
-            $sql = "
-                SELECT nombre
-                FROM   libros
-                WHERE  nombre      = '{$form->val['nombre']}'
-                AND    descripcion = '{$form->val['descripcion']}'
-                AND    autor       = '{$form->val['autor']}'
-                AND    editorial   = '{$form->val['editorial']}'
-                {$andid}
-            ";
-
-            $resultado = BBDD::query($sql);
+            $cantidad = $libro->existeLibro(
+                $form->val['nombre']
+               ,$form->val['descripcion']
+               ,$form->val['autor']
+               ,$form->val['editorial']
+               ,$form->val['id']
+            );
         }
 
-        return $resultado->num_rows;
+        return $cantidad;
     }
 
 
@@ -298,9 +291,17 @@
 
         $offset = $pagina * $limite;
 
-        $sql = "SELECT * FROM libros ORDER BY fecha_ult_mod DESC LIMIT {$limite} OFFSET {$offset} ";
+        $libro = new Libro();
 
-        $resultado = BBDD::query($sql);
+
+        $opt = [];
+  
+        $opt['orderby']['fecha_ult_mod'] = 'DESC';   
+        $opt['offset'] = $offset;
+        $opt['limit']  = $limite;
+    
+    
+        $resultado = $libro->seleccionar($opt);
 
         if ($resultado->num_rows > 0) 
         {

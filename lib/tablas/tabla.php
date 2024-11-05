@@ -162,6 +162,92 @@ abstract class Tabla
             $this->inicializar($fila);
         }
     }
+    /*
+    $opt = [];
+
+    $opt['select']['nombre'] = '';
+    $opt['select']['descripcion'] = '';
+
+
+    $opt['where']['nombre'] = 'Andrés';
+
+    $opt['orderby']['nombre'] = 'ASC';
+
+    $opt['offset'] = 10;
+    $opt['limit']  = 10;
+
+
+
+    $libro->seleccionar($opt);
+    */
+
+    function seleccionar($opt = [])
+    {
+        $_select = '*';
+        if (!empty($opt['select']))
+        {
+            $_select = '';
+            foreach($opt['select'] as $atributo => $valor)
+            {
+                $_select .= ",{$atributo}";
+
+            }
+
+            $_select = substr($_select,1);
+        }
+
+
+        $_where = 'WHERE 1 = 1';
+        if (!empty($opt['where']))
+        {
+            foreach($opt['where'] as $atributo => $valor)
+            {
+                $_where .= " AND {$atributo} = '{$valor}' ";
+
+            }
+        }
+        if (!empty($opt['notwhere']))
+        {
+            foreach($opt['notwhere'] as $atributo => $valor)
+            {
+                $_where .= " AND {$atributo} <> '{$valor}' ";
+
+            }
+        }
+
+
+        $_orderby = '';
+        if (!empty($opt['orderby']))
+        {
+            $_orderby = 'ORDER BY ';
+            foreach($opt['orderby'] as $atributo => $valor)
+            {
+                $_orderby .= "{$atributo} {$valor},";
+
+            }
+            $_orderby = substr($_orderby,0,strlen($_orderby) -1);
+        }
+
+        $_limit  = empty($opt['limit'])? '' : "LIMIT {$opt['limit']} ";
+        $_offset = empty($opt['offset'])? '': "OFFSET {$opt['offset']} ";
+
+
+
+        $sql = "
+            SELECT {$_select}
+            FROM {$this->tabla}
+            {$_where}
+            {$_orderby}
+            {$_limit}
+            {$_offset}
+        ";
+
+
+        $resultado = BBDD::query($sql);
+
+        return $resultado;
+
+    }
 
 
 
