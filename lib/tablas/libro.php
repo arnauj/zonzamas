@@ -29,7 +29,7 @@
       
         
         
-            $resultado = $libro->seleccionar($opt);
+            $resultado = $this->seleccionar($opt);
 
             return $resultado->num_rows;
             
