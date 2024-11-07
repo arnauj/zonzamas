@@ -2,9 +2,6 @@
 
     require_once "general.php";
 
-
-
-
     echo Plantilla::header("CIFP Zonzamas");
 
 

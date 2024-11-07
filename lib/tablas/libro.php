@@ -6,6 +6,8 @@
     {
         const TABLA = 'libros';
 
+        const EDITORIALES = ['AY' => 'Anaya', 'ST' => 'Santillana'];
+
         function __construct()
         {
             parent::__construct(self::TABLA);

@@ -28,6 +28,9 @@ spl_autoload_register(function ($nombre) {
         case 'tabla':     
             require_once "lib/tablas/tabla.php";
         break;
+        case 'programabase':
+            require_once "lib/proc/programa_base.php";
+        break;
         default:
 
             require_once "lib/{$nombre}/{$nombre}.php";
@@ -36,3 +39,15 @@ spl_autoload_register(function ($nombre) {
 
 
 });
+
+
+
+function enlace($href,$texto_enlace, $opt=[])
+{
+
+    $title   = empty($opt['title'])  ? '' : " data-bs-toggle=\"tooltip\" data-bs-html=\"true\" data-bs-title=\"{$opt['title']}\" ";
+    $class   = empty($opt['class'])  ? '' : " class=\"{$opt['class']}\" ";
+    $onclick = empty($opt['onclick'])? '' : " onclick=\"{$opt['onclick']}\" ";
+
+    return "<a {$onclick} href=\"{$href}\" {$class} {$title} >{$texto_enlace}</a>";
+}

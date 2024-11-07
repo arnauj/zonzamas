@@ -1,373 +1,257 @@
 <?php
 
-
+    define('LIMITE_SCROLL', '5');
+  
     require_once "general.php";
 
-    ob_start();
-
-
-    $form = Form::getInstance();
-
-    echo Plantilla::header("CIFP Zonzamas");
-
-    define('EDITORIALES', ['AY' => 'Anaya', 'ST' => 'Santillana']);
-
-    define('LIMITE_SCROLL', '5');
-
-    $html_salida = '';
-
-
-    $oper = $_REQUEST['oper'];
-
-    $errores = [];
-
-    switch($oper)
+    class BibliotecaCRUD extends ProgramaBase
     {
-        case 'create':
+        function __construct()
+        {
+            $this->libro = new Libro();
+
+        }
+
+        function inicializar()
+        {
+            $this->form->accion('/biblioteca/');
+
+            $paso        = new Hidden('paso'); 
+            $paso->value = 1;
+
+            $oper        = new Hidden('oper'); 
+            $id          = new Hidden('id');        
+
+            $nombre      = new Input   ('nombre'       ,['placeholder' => 'Nombre del libro...'     , 'validar' => True, 'ereg' => EREG_TEXTO_100_OBLIGATORIO  ]);
+            $descripcion = new Textarea('descripcion',['placeholder' => 'Descripción del libro...', 'validar' => True ]);
+            $autor       = new Input   ('autor'      ,['placeholder' => 'Autor del libro...'      , 'validar' => True, 'ereg' => EREG_TEXTO_150_OBLIGATORIO  ]);
+            $editorial   = new Select  ('editorial'  ,Libro::EDITORIALES,['validar' => True]);
+
+            $this->form->cargar($paso);
+            $this->form->cargar($oper);
+            $this->form->cargar($id);
+
+            $this->form->cargar($nombre);
+            $this->form->cargar($descripcion);
+            $this->form->cargar($autor);
+            $this->form->cargar($editorial);
+        }
 
 
-            inicializar();
 
-            if (!empty($form->val['paso']))
+        function cabecera($titulo_seccion='')
+        {
+            if(empty($titulo_seccion))
             {
-                $errores = $form->validar();
-
-
-
-                if(!$form->cantidad_errores)
-                {
-                    if(!existeLibro())
-                    {
-                        insertar();
-                        $form->activeDisable();
-                    }
-                    else
-                    {
-                        $form->duplicado = True;
-                    }
-
-                }
-            }
-
-
-            $html_salida .= cabecera('alta');
-            $html_salida .= formulario($oper,$errores);
-
-        break;
-        case 'update':
-
-            inicializar();
-
-            if (empty($form->val['paso']))
-            {
-                //Cargar los datos
-                recuperar();
+                $breadcrumb = "<li class=\"breadcrumb-item\">biblioteca</li>";
             }
             else
             {
-                $errores = $form->validar();
-
-                if(!$form->cantidad_errores)
-                {
-                    if (!existeLibro($form->val['id']))
-                    {
-                        actualizar();
-                        $form->activeDisable();
-                    }
-                    else
-                    {
-                        $form->duplicado = True;
-                    }
-                }
-
+                
+                $breadcrumb = "
+                    <li class=\"breadcrumb-item\">". enlace('/biblioteca/','biblioteca',['title' => 'Volver al <b>listado</b>']) ."</li>
+                    <li class=\"breadcrumb-item active\" aria-current=\"page\">{$titulo_seccion}</li>
+                ";
             }
 
-            $html_salida .= cabecera('actualizar');
-            $html_salida .= formulario($oper,$errores);
-
-        break;
-        case 'delete':
-
-            eliminar();
-
-            ob_clean();
-
-            header("location: /biblioteca/");
-            exit(0);
-
-        break;
-        default:
-
-            $html_salida .= cabecera();
-
-            $html_salida .= resultados_busqueda();
             
 
-        break;
-    }
-
-    function inicializar()
-    {
-        $form = Form::getInstance();
-
-        $form->accion('/biblioteca/');
-
-        $paso        = new Hidden('paso'); 
-        $paso->value = 1;
-
-        $oper        = new Hidden('oper'); 
-        $id          = new Hidden('id');        
-
-        $nombre      = new Input   ('nombre'       ,['placeholder' => 'Nombre del libro...'     , 'validar' => True, 'ereg' => EREG_TEXTO_100_OBLIGATORIO  ]);
-        $descripcion = new Textarea('descripcion',['placeholder' => 'Descripción del libro...', 'validar' => True ]);
-        $autor       = new Input   ('autor'      ,['placeholder' => 'Autor del libro...'      , 'validar' => True, 'ereg' => EREG_TEXTO_150_OBLIGATORIO  ]);
-        $editorial   = new Select  ('editorial'  ,EDITORIALES,['validar' => True]);
-
-        $form->cargar($paso);
-        $form->cargar($oper);
-        $form->cargar($id);
-
-        $form->cargar($nombre);
-        $form->cargar($descripcion);
-        $form->cargar($autor);
-        $form->cargar($editorial);
-    }
-
-
-
-    function cabecera($titulo_seccion='')
-    {
-        if(empty($titulo_seccion))
-        {
-            $breadcrumb = "<li class=\"breadcrumb-item\">biblioteca</li>";
-        }
-        else
-        {
-            $breadcrumb = "
-                <li class=\"breadcrumb-item\"><a href=\"/biblioteca/\">biblioteca</a></li>
-                <li class=\"breadcrumb-item active\" aria-current=\"page\">{$titulo_seccion}</li>
+            return "
+                <nav aria-label=\"breadcrumb\">
+                    <ol class=\"breadcrumb\">
+                        <li class=\"breadcrumb-item\">". enlace('','Zonzamas') ."</li>
+                        {$breadcrumb}
+                    </ol>
+                </nav>
             ";
         }
 
 
-        return "
-            <nav aria-label=\"breadcrumb\">
-                <ol class=\"breadcrumb\">
-                    <li class=\"breadcrumb-item\"><a href=\"/\">Zonzamas</a></li>
-                    {$breadcrumb}
-                </ol>
-            </nav>
-        ";
-    }
-
-
-    function formulario($oper,$errores = [])
-    {
-        $form = Form::getInstance();
-
-        $id = $form->val['id'];
-
-        $botones_extra = '';
-        $mensaje_exito = False;
-        if($form->val['paso'] && $form->cantidad_errores == 0)
+        function formulario($oper,$errores = [])
         {
-            $mensaje_exito = True;
-            $botones_extra = '<a href="/biblioteca/alta/" class="btn btn-primary">Nuevo libro</a>';
 
-            if($oper == 'update')
-                $botones_extra .= ' <a href="/biblioteca/actualizar/'. $id .'" class="btn btn-primary">Editar</a>';
-        
-        }
+            $id = $this->form->val['id'];
 
-        $html_formulario = $form->pintar(['botones_extra' => $botones_extra,'exito' =>  $mensaje_exito]);
-
-        return $html_formulario;
-
-    }
-
-    function existeLibro($id='')
-    {
-        $form = Form::getInstance();
-
-        $cantidad = 0;
-        if (   !empty($form->val['nombre']) 
-            && !empty($form->val['descripcion'])
-            && !empty($form->val['autor'])
-            && !empty($form->val['editorial'])
-        )
-        {   
-            $libro = new Libro();
-
-            $cantidad = $libro->existeLibro(
-                $form->val['nombre']
-               ,$form->val['descripcion']
-               ,$form->val['autor']
-               ,$form->val['editorial']
-               ,$form->val['id']
-            );
-        }
-
-        return $cantidad;
-    }
-
-
-    function eliminar()
-    {
-        $libro = new Libro();
-
-        $libro->id = Form::getInstance()->val['id'];
-
-        $libro->eliminar();
-
-    }
-
-    function recuperar()
-    {
-
-
-        $form = Form::getInstance();
-
-        $libro = new Libro();
-
-        $libro->recuperar($form->val['id']);
-
-
-
-        $form->elementos['nombre']->value        = $libro->nombre;
-        $form->elementos['descripcion']->value = $libro->descripcion;
-        $form->elementos['autor']->value       = $libro->autor;
-        $form->elementos['editorial']->value   = $libro->editorial;
-    }
-
-    function actualizar()
-    {
-
-        $form = Form::getInstance();
-
-        if (!empty($form->val['id']))
-        {
-            $libro = new Libro();
-            $libro->inicializar($form->val);
-
-            $libro->actualizar();
-        }
-    }
-
-
-    function insertar()
-    {
-        $form = Form::getInstance();
-
-        $libro = new Libro();
-        $libro->inicializar($form->val);
-
-        $libro->insertar();
-    }
-
-
-
-    function resultados_busqueda()
-    {
-        $form = Form::getInstance();
-
-        $listado_libros = '
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Autor</th>
-                    <th scope="col">Editorial</th>
-                </tr>
-            </thead>
-            <tbody>
-        
-        ';
-
-        $limite = LIMITE_SCROLL;
-
-        $pagina = $form->val['pagina'];
-
-        $offset = $pagina * $limite;
-
-        $libro = new Libro();
-
-
-        $opt = [];
-  
-        $opt['orderby']['fecha_ult_mod'] = 'DESC';   
-        $opt['offset'] = $offset;
-        $opt['limit']  = $limite;
-    
-    
-        $resultado = $libro->seleccionar($opt);
-
-        if ($resultado->num_rows > 0) 
-        {
-            while ($fila = $resultado->fetch_assoc()) 
+            $botones_extra = '';
+            $mensaje_exito = False;
+            if($this->form->val['paso'] && $this->form->cantidad_errores == 0)
             {
+                $mensaje_exito = True;
+                $botones_extra = enlace('/biblioteca/alta/','Nuevo libro',['class'=> 'btn btn-primary']);
 
-                $listado_libros .= "
-                    <tr>
-                        <th scope=\"row\">
-                            <a href=\"/biblioteca/actualizar/{$fila['id']}\" class=\"btn btn-primary\">Actualizar</a>
-                            <a onclick=\"if(confirm('Cuidado, estás tratando de eliminar el libro: {$fila['nombre']}')) location.href = '/biblioteca/eliminar/{$fila['id']}';\" class=\"btn btn-danger\">Eliminar</a>
-                        </th>
-                        <td>{$fila['nombre']}</td>
-                        <td>{$fila['descripcion']}</td>
-                        <td>{$fila['autor']}</td>
-                        <td>". EDITORIALES[$fila['editorial']] ."</td>
-                    </tr>
-                ";
+                if($oper == 'update')
+                    $botones_extra .= enlace('/biblioteca/actualizar/'.$id,'Editar',['class'=> 'btn btn-primary']);
+            
             }
-        } 
-        else 
-        {
-            $listado_libros = '<tr><td colspan="5">No hay resultados</td></tr>';
+
+            $html_formulario = $this->form->pintar(['botones_extra' => $botones_extra,'exito' =>  $mensaje_exito]);
+
+            return $html_formulario;
+
         }
 
-        if($pagina)
-            $pagina_anterior = '<li class="page-item"><a class="page-link" href="/biblioteca/pag/'. ($pagina - 1) .'"">Anterior</a></li>';
+        function existe($id='')
+        {
 
-        $listado_libros .= '
-                </tbody>
-            </table>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    '. $pagina_anterior .'
-                    <li class="page-item"><a class="page-link" href="/biblioteca/pag/'. ($pagina + 1) .'">Siguiente</a></li>
-                </ul>
-            </nav>
+            $cantidad = 0;
+            if (   !empty($this->form->val['nombre']) 
+                && !empty($this->form->val['descripcion'])
+                && !empty($this->form->val['autor'])
+                && !empty($this->form->val['editorial'])
+            )
+            {   
+
+                $cantidad = $this->libro->existeLibro(
+                    $this->form->val['nombre']
+                ,$this->form->val['descripcion']
+                ,$this->form->val['autor']
+                ,$this->form->val['editorial']
+                ,$this->form->val['id']
+                );
+            }
+
+            return $cantidad;
+        }
 
 
-            <div class="alta">
-                <a href="/biblioteca/alta/" class="btn btn-success">Alta de libro</a>
-            </div>
-        ';
+        function eliminar()
+        {
+
+            $this->libro->id = $this->form->val['id'];
+
+            $this->libro->eliminar();
+
+        }
+
+        function recuperar()
+        {
+
+            $this->libro->recuperar($this->form->val['id']);
 
 
-        return $listado_libros;
+
+            $this->form->elementos['nombre']->value        = $this->libro->nombre;
+            $this->form->elementos['descripcion']->value = $this->libro->descripcion;
+            $this->form->elementos['autor']->value       = $this->libro->autor;
+            $this->form->elementos['editorial']->value   = $this->libro->editorial;
+        }
+
+        function actualizar()
+        {
+
+            if (!empty($this->form->val['id']))
+            {
+                $this->libro->inicializar($this->form->val);
+
+                $this->libro->actualizar();
+            }
+        }
 
 
+        function insertar()
+        {
+
+            $this->libro->inicializar($this->form->val);
+
+            $this->libro->insertar();
+        }
+
+
+
+        function resultados_busqueda()
+        {
+            $listado_libros = '
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Autor</th>
+                        <th scope="col">Editorial</th>
+                    </tr>
+                </thead>
+                <tbody>
+            
+            ';
+
+            $limite = LIMITE_SCROLL;
+
+            $pagina = $this->form->val['pagina'];
+
+            $offset = $pagina * $limite;
+
+
+
+            $opt = [];
+    
+            $opt['orderby']['fecha_ult_mod'] = 'DESC';   
+            $opt['offset'] = $offset;
+            $opt['limit']  = $limite;
+        
+        
+            $resultado = $this->libro->seleccionar($opt);
+
+            if ($resultado->num_rows > 0) 
+            {
+                while ($fila = $resultado->fetch_assoc()) 
+                {
+
+                    
+                    
+
+                    $listado_libros .= "
+                        <tr>
+                            <th scope=\"row\">
+                                ". enlace("/biblioteca/actualizar/{$fila['id']}",'Actualizar',['class' => 'btn btn-primary']) ."
+                                ". enlace("#",'Eliminar',['class' => 'btn btn-danger','onclick' => "if(confirm('Cuidado, estás tratando de eliminar el libro: {$fila['nombre']}')) location.href = '/biblioteca/eliminar/{$fila['id']}';"]) ."
+                            </th>
+                            <td>{$fila['nombre']}</td>
+                            <td>{$fila['descripcion']}</td>
+                            <td>{$fila['autor']}</td>
+                            <td>". Libro::EDITORIALES[$fila['editorial']] ."</td>
+                        </tr>
+                    ";
+                }
+            } 
+            else 
+            {
+                $listado_libros = '<tr><td colspan="5">No hay resultados</td></tr>';
+            }
+
+            if($pagina)
+                $pagina_anterior = '<li class="page-item">'. enlace('/biblioteca/pag/'. ($pagina - 1), 'Anterior',['class' => 'page-link']) .'</li>';
+            
+
+            $listado_libros .= '
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        '. $pagina_anterior .'
+                        <li class="page-item">'. enlace('/biblioteca/pag/'. ($pagina + 1), 'Siguiente',['class' => 'page-link']) .'</li>
+                    </ul>
+                </nav>
+
+
+                <div class="alta">'. enlace('/biblioteca/alta/', 'Alta de libro',['class' => 'btn btn-success']) .'</div>
+            ';
+            
+
+            return $listado_libros;
+
+
+        }
     }
 
 
-?>
+    $biblioteca = new BibliotecaCRUD();
 
-
-
-
-
-    
-    <div class="container">
-
-    <?php echo $html_salida; ?>
-
-    </div>
-    <br />
-<?php
-
-    echo Plantilla::footer();
+    echo $biblioteca->main();
 
 ?>
+
+
+
+
+
