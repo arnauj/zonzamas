@@ -5,13 +5,9 @@
 
         function main()
         {
-
             ob_start();
 
-
-            $this->form = Form::getInstance();
-        
-           
+            $this->form = Form::getInstance();                
         
             $oper = $this->form->val['oper'];
         
@@ -87,8 +83,8 @@
                     $this->eliminar();
         
                     ob_clean();
-        
-                    header("location: /biblioteca/");
+
+                    header("location: /". explode('/',$_SERVER['REQUEST_URI'])[1] ."/");
                     exit(0);
         
                 break;

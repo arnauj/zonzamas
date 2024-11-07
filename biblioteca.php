@@ -213,6 +213,9 @@
                         </tr>
                     ";
                 }
+
+                if ($resultado->num_rows == LIMITE_SCROLL)
+                    $siguiente = '<li class="page-item">'. enlace('/biblioteca/pag/'. ($pagina + 1), 'Siguiente',['class' => 'page-link']) .'</li>';
             } 
             else 
             {
@@ -229,7 +232,7 @@
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         '. $pagina_anterior .'
-                        <li class="page-item">'. enlace('/biblioteca/pag/'. ($pagina + 1), 'Siguiente',['class' => 'page-link']) .'</li>
+                        '. $siguiente .'
                     </ul>
                 </nav>
 
