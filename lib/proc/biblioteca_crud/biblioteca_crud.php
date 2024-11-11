@@ -2,19 +2,22 @@
 
     define('LIMITE_SCROLL', '5');
   
-    require_once "general.php";
 
     class BibliotecaCRUD extends ProgramaBase
     {
         function __construct()
         {
+
             $this->libro = new Libro();
+
+
+            parent::__construct($this->libro);
 
         }
 
         function inicializar()
         {
-            $this->form->accion('/biblioteca/');
+            $this->form->accion('/'. $this->seccion .'/');
 
             $paso        = new Hidden('paso'); 
             $paso->value = 1;
@@ -23,72 +26,19 @@
             $id          = new Hidden('id');        
 
             $nombre      = new Input   ('nombre'       ,['placeholder' => 'Nombre del libro...'     , 'validar' => True, 'ereg' => EREG_TEXTO_100_OBLIGATORIO  ]);
-            $descripcion = new Textarea('descripcion',['placeholder' => 'Descripción del libro...', 'validar' => True ]);
-            $autor       = new Input   ('autor'      ,['placeholder' => 'Autor del libro...'      , 'validar' => True, 'ereg' => EREG_TEXTO_150_OBLIGATORIO  ]);
-            $editorial   = new Select  ('editorial'  ,Libro::EDITORIALES,['validar' => True]);
+            $descripcion = new Textarea('descripcion'  ,['placeholder' => 'Descripción del libro...', 'validar' => True ]);
+            $autor       = new Input   ('autor'        ,['placeholder' => 'Autor del libro...'      , 'validar' => True, 'ereg' => EREG_TEXTO_150_OBLIGATORIO  ]);
+            $editorial   = new Select  ('editorial'    ,Libro::EDITORIALES,['validar' => True]);
 
             $this->form->cargar($paso);
             $this->form->cargar($oper);
             $this->form->cargar($id);
-
             $this->form->cargar($nombre);
             $this->form->cargar($descripcion);
             $this->form->cargar($autor);
             $this->form->cargar($editorial);
         }
 
-
-
-        function cabecera($titulo_seccion='')
-        {
-            if(empty($titulo_seccion))
-            {
-                $breadcrumb = "<li class=\"breadcrumb-item\">biblioteca</li>";
-            }
-            else
-            {
-                
-                $breadcrumb = "
-                    <li class=\"breadcrumb-item\">". enlace('/biblioteca/','biblioteca',['title' => 'Volver al <b>listado</b>']) ."</li>
-                    <li class=\"breadcrumb-item active\" aria-current=\"page\">{$titulo_seccion}</li>
-                ";
-            }
-
-            
-
-            return "
-                <nav aria-label=\"breadcrumb\">
-                    <ol class=\"breadcrumb\">
-                        <li class=\"breadcrumb-item\">". enlace('','Zonzamas') ."</li>
-                        {$breadcrumb}
-                    </ol>
-                </nav>
-            ";
-        }
-
-
-        function formulario($oper,$errores = [])
-        {
-
-            $id = $this->form->val['id'];
-
-            $botones_extra = '';
-            $mensaje_exito = False;
-            if($this->form->val['paso'] && $this->form->cantidad_errores == 0)
-            {
-                $mensaje_exito = True;
-                $botones_extra = enlace('/biblioteca/alta/','Nuevo libro',['class'=> 'btn btn-primary']);
-
-                if($oper == 'update')
-                    $botones_extra .= enlace('/biblioteca/actualizar/'.$id,'Editar',['class'=> 'btn btn-primary']);
-            
-            }
-
-            $html_formulario = $this->form->pintar(['botones_extra' => $botones_extra,'exito' =>  $mensaje_exito]);
-
-            return $html_formulario;
-
-        }
 
         function existe($id='')
         {
@@ -114,15 +64,6 @@
         }
 
 
-        function eliminar()
-        {
-
-            $this->libro->id = $this->form->val['id'];
-
-            $this->libro->eliminar();
-
-        }
-
         function recuperar()
         {
 
@@ -130,32 +71,11 @@
 
 
 
-            $this->form->elementos['nombre']->value        = $this->libro->nombre;
+            $this->form->elementos['nombre']->value      = $this->libro->nombre;
             $this->form->elementos['descripcion']->value = $this->libro->descripcion;
             $this->form->elementos['autor']->value       = $this->libro->autor;
             $this->form->elementos['editorial']->value   = $this->libro->editorial;
         }
-
-        function actualizar()
-        {
-
-            if (!empty($this->form->val['id']))
-            {
-                $this->libro->inicializar($this->form->val);
-
-                $this->libro->actualizar();
-            }
-        }
-
-
-        function insertar()
-        {
-
-            $this->libro->inicializar($this->form->val);
-
-            $this->libro->insertar();
-        }
-
 
 
         function resultados_busqueda()
@@ -203,7 +123,7 @@
                     $listado_libros .= "
                         <tr>
                             <th scope=\"row\">
-                                ". enlace("/biblioteca/actualizar/{$fila['id']}",'Actualizar',['class' => 'btn btn-primary']) ."
+                                ". enlace("/{$this->seccion}/actualizar/{$fila['id']}",'Actualizar',['class' => 'btn btn-primary']) ."
                                 ". enlace("#",'Eliminar',['class' => 'btn btn-danger','onclick' => "if(confirm('Cuidado, estás tratando de eliminar el libro: {$fila['nombre']}')) location.href = '/biblioteca/eliminar/{$fila['id']}';"]) ."
                             </th>
                             <td>{$fila['nombre']}</td>
@@ -215,7 +135,7 @@
                 }
 
                 if ($resultado->num_rows == LIMITE_SCROLL)
-                    $siguiente = '<li class="page-item">'. enlace('/biblioteca/pag/'. ($pagina + 1), 'Siguiente',['class' => 'page-link']) .'</li>';
+                    $siguiente = '<li class="page-item">'. enlace("/{$this->seccion}/pag/". ($pagina + 1), 'Siguiente',['class' => 'page-link']) .'</li>';
             } 
             else 
             {
@@ -223,7 +143,7 @@
             }
 
             if($pagina)
-                $pagina_anterior = '<li class="page-item">'. enlace('/biblioteca/pag/'. ($pagina - 1), 'Anterior',['class' => 'page-link']) .'</li>';
+                $pagina_anterior = '<li class="page-item">'. enlace("/{$this->seccion}/pag/". ($pagina - 1), 'Anterior',['class' => 'page-link']) .'</li>';
             
 
             $listado_libros .= '
@@ -237,7 +157,7 @@
                 </nav>
 
 
-                <div class="alta">'. enlace('/biblioteca/alta/', 'Alta de libro',['class' => 'btn btn-success']) .'</div>
+                <div class="alta">'. enlace("/{$this->seccion}/alta/", 'Alta de libro',['class' => 'btn btn-success']) .'</div>
             ';
             
 
@@ -246,13 +166,6 @@
 
         }
     }
-
-
-    $biblioteca = new BibliotecaCRUD();
-
-    echo $biblioteca->main();
-
-?>
 
 
 

@@ -2,17 +2,17 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     #RewriteRule ^producto/([0-9]+)$             /producto.php?id=$1 [L]
-    RewriteRule ^biblioteca\/$                   /biblioteca.php [L]
-    RewriteRule ^biblioteca/pag/([0-9]+)$        /biblioteca.php?pagina=$1 [L]
+    RewriteRule ^biblioteca\/$                   /index.php?seccion=biblioteca [L]
+    RewriteRule ^biblioteca/pag/([0-9]+)$        /index.php?seccion=biblioteca&pagina=$1 [L]
 
-    RewriteRule ^biblioteca/actualizar/([0-9]+)$ /biblioteca.php?oper=update&id=$1 [L]
-    RewriteRule ^biblioteca/eliminar/([0-9]+)$   /biblioteca.php?oper=delete&id=$1 [L]
-    RewriteRule ^biblioteca/alta\/               /biblioteca.php?oper=create [L]
+    RewriteRule ^biblioteca/actualizar/([0-9]+)$ /index.php?seccion=biblioteca&oper=update&id=$1 [L]
+    RewriteRule ^biblioteca/eliminar/([0-9]+)$   /index.php?seccion=biblioteca&oper=delete&id=$1 [L]
+    RewriteRule ^biblioteca/alta\/               /index.php?seccion=biblioteca&oper=create [L]
 
 
     # Redirigir la URL de tipo /datos/otros/numero a /index.php?seccion=datos&oper=otros&id=numero
     #RewriteRule ^seccion/([^/]+)/([^/]+)/([^/]+)$ /index.php?seccion=$1&oper=$2&id=$3 [L,QSA]
 
     # Redirigir la URL de tipo / a /index.php?seccion=inicio
-    #RewriteRule ^$ /index.php?seccion=inicio [L,QSA]
+    RewriteRule ^$ /index.php?seccion= [L,QSA]
 </IfModule>
