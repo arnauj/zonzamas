@@ -1,10 +1,10 @@
 <?php
 
-    define('LIMITE_SCROLL', '5');
-  
 
     class BibliotecaCRUD extends ProgramaBase
     {
+        const LIMITE_SCROLL = 5;
+
         function __construct()
         {
 
@@ -95,7 +95,7 @@
             
             ';
 
-            $limite = LIMITE_SCROLL;
+            $limite = BibliotecaCrud::LIMITE_SCROLL;
 
             $pagina = $this->form->val['pagina'];
 
@@ -134,7 +134,7 @@
                     ";
                 }
 
-                if ($resultado->num_rows == LIMITE_SCROLL)
+                if ($resultado->num_rows == BibliotecaCRUD::LIMITE_SCROLL)
                     $siguiente = '<li class="page-item">'. enlace("/{$this->seccion}/pag/". ($pagina + 1), 'Siguiente',['class' => 'page-link']) .'</li>';
             } 
             else 

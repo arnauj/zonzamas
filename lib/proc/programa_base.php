@@ -5,19 +5,17 @@
         var $seccion;
 
 
-        function __construct($clase_generica)
+        function __construct($clase_generica='')
         {
-            $this->seccion = explode('/',$_SERVER['REQUEST_URI'])[1];
-
+            $this->seccion        = explode('/',$_SERVER['REQUEST_URI'])[1];
             $this->clase_generica = $clase_generica;
+            $this->form           = Form::getInstance(); 
 
         }
 
         function main()
         {
-            ob_start();
-
-            $this->form = Form::getInstance();                
+            ob_start();             
         
             $oper = $this->form->val['oper'];
         
