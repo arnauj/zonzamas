@@ -1,8 +1,4 @@
 
-
---/home/juanra/Escritorio/libros.sql
-
-DROP TABLE libros;
 CREATE TABLE libros(
 
      id                 INT NOT NULL AUTO_INCREMENT PRIMARY KEY
