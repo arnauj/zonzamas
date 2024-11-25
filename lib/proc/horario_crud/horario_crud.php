@@ -22,7 +22,7 @@
 
             $ciclo = new Ciclo();
 
-            $lista_ciclos   = new Select  ('lista_ciclos'    ,$ciclo->listaCiclos(),['validar' => True]);
+            $lista_ciclos   = new Select  ('lista_ciclos'    ,['' => ''] + $ciclo->listaCiclos(),['validar' => True,'placeholder' => 'Elige un ciclo']);
 
             $this->form->cargar($lista_ciclos);
 
@@ -49,10 +49,10 @@
 
                     idlista_ciclos.addEventListener('click', function(e) {
                         
-                        console.log(e.target.value)
-
-
-                        location.href = '/horario/' + e.target.value  + '/';
+                        if (e.target.value != '')
+                        {
+                            location.href = '/horario/' + e.target.value  + '/';
+                        }
 
                     });
                             

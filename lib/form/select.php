@@ -16,6 +16,11 @@
         {
             $this->previo_pintar();
 
+            if(!empty($this->placeholder))
+            {
+                $this->options[''] = $this->placeholder;
+            }
+
 
             $html_options = '';
             foreach ($this->options as $code => $valor)
