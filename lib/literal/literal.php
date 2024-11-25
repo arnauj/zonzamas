@@ -21,6 +21,7 @@
                        ,'error_gen'   => 'El campo es inválido'
                        ,'nuevo'       => 'Nuevo'
                        ,'editar'      => 'Editar'
+                       ,'lista_ciclos'=> 'Listado de ciclos'
  
                     ];
 

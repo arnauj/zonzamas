@@ -96,15 +96,22 @@
                 $html_elementos .= $elemento->pintar();
             }
 
-            return "
-                <form method=\"POST\" action=\"{$this->accion}\">
-                    {$mensaje_final}
-                    {$html_elementos}
-                    
+            $boton_enviar = '';
+            if (empty($opt['no_pintar_boton']))
+            {
+                $boton_enviar = "
                     <div style=\"text-align:right\">
                         {$botones_extra}
                         <input {$disabled} type=\"submit\" class=\"btn btn-primary\" value=\"{$texto_enviar}\" />
                     </div>
+                ";
+            }
+
+            return "
+                <form method=\"POST\" action=\"{$this->accion}\">
+                    {$mensaje_final}
+                    {$html_elementos}
+                    {$boton_enviar}
                 </form>
             ";
 

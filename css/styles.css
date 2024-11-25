@@ -55,3 +55,13 @@ h1 > span{
 .mensaje_error{
     background: #ed5e5e;
 }
+
+
+td.horariotd {
+    width: 18%;
+    height: 30px;
+    color: #fff;
+    text-align: center;
+    border: 1px solid;
+    border-radius: 8px;
+}

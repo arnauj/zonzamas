@@ -18,3 +18,7 @@ DROP TABLE libros;
 \. /var/www/html/zonzamas.lan/TABLAS/ciclos.sql
 \. /var/www/html/zonzamas.lan/TABLAS/profesores.sql
 \. /var/www/html/zonzamas.lan/TABLAS/modulos.sql
+\. /var/www/html/zonzamas.lan/TABLAS/horarios.sql
+\. /var/www/html/zonzamas.lan/TABLAS/modulos_alumnos.sql
+\. /var/www/html/zonzamas.lan/TABLAS/ciclos_modulos.sql
+\. /var/www/html/zonzamas.lan/TABLAS/libros.sql

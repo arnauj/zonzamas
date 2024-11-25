@@ -206,6 +206,16 @@ abstract class Tabla
 
             }
         }
+
+        if (!empty($opt['where_sc']))
+        {
+            foreach($opt['where_sc'] as $atributo => $valor)
+            {
+                $_where .= " AND {$atributo} = {$valor} ";
+
+            }
+        }
+
         if (!empty($opt['notwhere']))
         {
             foreach($opt['notwhere'] as $atributo => $valor)
@@ -231,11 +241,11 @@ abstract class Tabla
         $_limit  = empty($opt['limit'])? '' : "LIMIT {$opt['limit']} ";
         $_offset = empty($opt['offset'])? '': "OFFSET {$opt['offset']} ";
 
-
+        $_from   = empty($opt['from'])? $this->tabla : $this->tabla .' '.$opt['from'];
 
         $sql = "
             SELECT {$_select}
-            FROM {$this->tabla}
+            FROM {$_from}
             {$_where}
             {$_orderby}
             {$_limit}

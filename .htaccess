@@ -10,6 +10,10 @@
     RewriteRule ^biblioteca/alta\/               /index.php?seccion=biblioteca&oper=create [L]
 
 
+    RewriteRule ^horario\/$                      /index.php?seccion=horario [L]
+    RewriteRule ^horario/(.*)\/                  /index.php?seccion=horario&ciclo=$1 [L]
+
+
     # Redirigir la URL de tipo /datos/otros/numero a /index.php?seccion=datos&oper=otros&id=numero
     #RewriteRule ^seccion/([^/]+)/([^/]+)/([^/]+)$ /index.php?seccion=$1&oper=$2&id=$3 [L,QSA]
 

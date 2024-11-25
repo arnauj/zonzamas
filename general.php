@@ -33,6 +33,8 @@ spl_autoload_register(function ($nombre) {
         break;
         case 'libro':     
         case 'tabla':          
+        case 'ciclo':
+        case 'horario':
             require_once "lib/tablas/{$nombre}.php";
         break;
         case 'programabase':
