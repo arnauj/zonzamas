@@ -22,7 +22,7 @@
 
             $ciclo = new Ciclo();
 
-            $lista_ciclos   = new Select  ('lista_ciclos'    ,['' => ''] + $ciclo->listaCiclos(),['validar' => True,'placeholder' => 'Elige un ciclo']);
+            $lista_ciclos   = new Select('lista_ciclos'    ,['' => ''] + $ciclo->listaCiclos(),['validar' => True,'placeholder' => 'Elige un ciclo']);
 
             $this->form->cargar($lista_ciclos);
 

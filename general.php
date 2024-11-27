@@ -23,6 +23,7 @@ spl_autoload_register(function ($nombre) {
 
     switch($nombre)
     {
+
         case 'campo':
         case 'hidden':
         case 'elemento':      
@@ -31,11 +32,11 @@ spl_autoload_register(function ($nombre) {
         case 'select':     
             require_once "lib/form/{$nombre}.php";
         break;
-        case 'libro':     
-        case 'tabla':          
-        case 'ciclo':
-        case 'horario':
-            require_once "lib/tablas/{$nombre}.php";
+        case 'form':     
+        case 'bbdd':          
+        case 'literal':
+        case 'plantilla':
+            require_once "lib/{$nombre}/{$nombre}.php";
         break;
         case 'programabase':
             require_once "lib/proc/programa_base.php";
@@ -44,7 +45,7 @@ spl_autoload_register(function ($nombre) {
             require_once "lib/proc/{$nombre_backup}_crud/{$nombre_backup}_crud.php";
         break;
         default:
-            require_once "lib/{$nombre}/{$nombre}.php";
+            require_once "lib/tablas/{$nombre}.php";
         break;
     }
 

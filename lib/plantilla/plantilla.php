@@ -235,20 +235,21 @@
                 $titulo .= ' - '.ucfirst($seccion);
 
             $salida = Plantilla::header($titulo);
+
+            if (empty($seccion))
+                $seccion = 'index';
             
 
             switch($seccion)
             {
-
-                case 'horario':
-                    $objeto_crud = new HorarioCRUD();
-                break;
-                case 'biblioteca':
-                    $objeto_crud = new BibliotecaCRUD();
+                case 'index':
+                    $objeto_crud = new IndexCRUD();  
                 break;
 
                 default:
-                    $objeto_crud = new IndexCRUD();                    
+                    $clase_crud = ucfirst($seccion) . 'CRUD';
+                    
+                    $objeto_crud = new $clase_crud();                    
                 break;
             }
 
