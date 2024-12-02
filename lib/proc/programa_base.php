@@ -33,19 +33,26 @@
                         $errores = $this->form->validar();
         
         
-        
+                        $salida_json['error'] = true;
                         if(!$this->form->cantidad_errores)
                         {
+
+                            $salida_json['error'] = false;
+                            
                             if(!$this->existe())
                             {
                                 $this->insertar();
                                 $this->form->activeDisable();
+                                $salida_json['salida'] = '<div class="exito">'. Literal::getInstance()->lit['mensaje_exito'] .'</div>';
                             }
                             else
                             {
                                 $this->form->duplicado = True;
+                                $salida_json['salida'] = '<div class="mensaje_error">'. Literal::getInstance()->lit['mensaje_duplicados'] .'</div>';
                             }
-        
+                            
+                            echo json_encode($salida_json);
+                            exit;
                         }
                     }
         
@@ -65,20 +72,30 @@
                     }
                     else
                     {
-                        $errores = $this->form->validar();
+                        $salida_json = $this->form->validar();
         
+                        $salida_json['error'] = true;
                         if(!$this->form->cantidad_errores)
                         {
+                            $salida_json['error'] = false;
+                            
                             if (!$this->existe($this->form->val['id']))
                             {
                                 $this->actualizar();
                                 $this->form->activeDisable();
+                                $salida_json['salida'] = '<div class="exito">'. Literal::getInstance()->lit['mensaje_exito'] .'</div>';
                             }
                             else
                             {
                                 $this->form->duplicado = True;
+                                $salida_json['salida'] = '<div class="mensaje_error">'. Literal::getInstance()->lit['mensaje_duplicados'] .'</div>';
                             }
                         }
+                    
+
+                        echo json_encode($salida_json);
+
+                        exit;
         
                     }
         

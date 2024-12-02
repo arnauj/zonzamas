@@ -28,11 +28,6 @@
 
         }
 
-        public function accion($ruta)
-        {
-            $this->accion = $ruta;
-        }
-
         public function cargar($elemento)
         {
             $this->elementos[$elemento->name] = $elemento;
@@ -84,9 +79,9 @@
             $disabled      = $this->disabled ? ' disabled="disabled" ' : '';
 
             if($this->duplicado)
-                $mensaje_final = '<div class="mensaje_error">Hay un registro duplicado en BBDD</div>';
+                $mensaje_final = '<div class="mensaje_error">'. Literal::getInstance()->lit['mensaje_duplicados'] .'</div>';
             else
-                $mensaje_final = $opt['exito']? '<div class="exito">Operación realizada con éxito</div>' : '';
+                $mensaje_final = $opt['exito']? '<div class="exito">'. Literal::getInstance()->lit['mensaje_exito'] .'</div>' : '';
 
             $texto_enviar = Literal::getInstance()->lit['enviar'];
 
@@ -102,13 +97,13 @@
                 $boton_enviar = "
                     <div style=\"text-align:right\">
                         {$botones_extra}
-                        <input {$disabled} type=\"submit\" class=\"btn btn-primary\" value=\"{$texto_enviar}\" />
+                        <input {$disabled} type=\"submit\" onclick=\"enviar_form('./{$this->val['id']}');return false;\" class=\"btn btn-primary\" value=\"{$texto_enviar}\" />
                     </div>
                 ";
             }
 
             return "
-                <form method=\"POST\" action=\"{$this->accion}\">
+                <form id=\"fcrud\" method=\"POST\" action=\"./\">
                     {$mensaje_final}
                     {$html_elementos}
                     {$boton_enviar}

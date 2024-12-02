@@ -17,8 +17,6 @@
 
         function inicializar()
         {
-            $this->form->accion('/'. $this->seccion .'/');
-
             $paso        = new Hidden('paso'); 
             $paso->value = 1;
 

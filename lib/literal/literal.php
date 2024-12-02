@@ -13,15 +13,17 @@
             {
                 case 'ES':
                     $this->lit = [
-                        'nombre'      => 'Nombre'
-                       ,'descripcion' => 'Descripción'
-                       ,'autor'       => 'Autor'
-                       ,'editorial'   => 'Editorial'
-                       ,'enviar'      => 'Enviar'
-                       ,'error_gen'   => 'El campo es inválido'
-                       ,'nuevo'       => 'Nuevo'
-                       ,'editar'      => 'Editar'
-                       ,'lista_ciclos'=> 'Listado de ciclos'
+                         'nombre'             => 'Nombre'
+                       , 'descripcion'        => 'Descripción'
+                       , 'autor'              => 'Autor'
+                       , 'editorial'          => 'Editorial'
+                       , 'enviar'             => 'Enviar'
+                       , 'error_gen'          => 'El campo es inválido'
+                       , 'nuevo'              => 'Nuevo'
+                       , 'editar'             => 'Editar'
+                       , 'lista_ciclos'       => 'Listado de ciclos'
+                       , 'mensaje_duplicados' => 'Hay un registro duplicado en BBDD'
+                       , 'mensaje_exito'      => 'Operación realizada con éxito'
  
                     ];
 
