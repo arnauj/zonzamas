@@ -30,7 +30,7 @@
         
                     if (!empty($this->form->val['paso']))
                     {
-                        $errores = $this->form->validar();
+                        $salida_json = $this->form->validar();
         
         
                         $salida_json['error'] = true;
