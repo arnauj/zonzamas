@@ -34,6 +34,7 @@
         
         
                         $salida_json['error'] = true;
+
                         if(!$this->form->cantidad_errores)
                         {
 
@@ -50,10 +51,10 @@
                                 $this->form->duplicado = True;
                                 $salida_json['salida'] = '<div class="mensaje_error">'. Literal::getInstance()->lit['mensaje_duplicados'] .'</div>';
                             }
-                            
-                            echo json_encode($salida_json);
-                            exit;
                         }
+
+                        echo json_encode($salida_json);
+                        exit;
                     }
         
         
